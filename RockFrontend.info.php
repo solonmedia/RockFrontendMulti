@@ -3,7 +3,7 @@
 namespace ProcessWire;
 
 $info = [
-  'title' => 'RockFrontend',
+  'title' => 'RockFrontendMulti',
   'version' => json_decode(file_get_contents(__DIR__ . "/package.json"))->version,
   'summary' => 'Module for easy frontend development',
   'autoload' => true,

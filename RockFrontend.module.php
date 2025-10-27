@@ -274,6 +274,7 @@ class RockFrontend extends WireData implements Module, ConfigurableModule
     $this->addHookAfter(
       "Page::render",
       function (HookEvent $event) {
+        $page = $event->object; //JAG
         $html = $event->return;
 
         // early exits
@@ -1186,10 +1187,10 @@ class RockFrontend extends WireData implements Module, ConfigurableModule
     $tmp = (new WireTempDir());
     (new WireHttp())->download($url, $tmp . "uikit.zip");
     $this->wire->files->unzip($tmp . "uikit.zip", $tpl);
-    $this->wire->files->rmdir($tpl . "uikit", true);
-    foreach (glob($tpl . "uikit-*") as $dir) {
-      $this->wire->files->rename($dir, $tpl . "uikit");
-    }
+    //$this->wire->files->rmdir($tpl . "uikit", true);
+    //foreach (glob($tpl . "uikit-*") as $dir) {
+    //  $this->wire->files->rename($dir, $tpl . "uikit");
+    //}
   }
 
   public function editLinks($options = null, $list = true, $size = 32)
@@ -2228,8 +2229,10 @@ class RockFrontend extends WireData implements Module, ConfigurableModule
     $profile = $this->wire->input->post('profile', 'filename');
     foreach ($this->profiles() as $path => $label) {
       if ($label !== $profile) continue;
-      $this->wire->files->copy("$path/files", $this->wire->config->paths->root);
-      $this->wire->message("Copied profile $label to PW");
+      $this->wire->files->copy("$path/files/site", $this->wire->config->paths->site); //JAG
+      $this->wire->message("Copied profile $label to ".$this->wire->config->urls->site); //JAG
+      //$this->wire->files->copy("$path/files", $this->wire->config->paths->root);
+      //$this->wire->message("Copied profile $label to PW");
       $this->wire->pages->get(1)->meta(
         self::installedprofilekey,
         $profile . " (last installed @ " . date("Y-m-d H:i:s") . ")"
@@ -3541,7 +3544,8 @@ class RockFrontend extends WireData implements Module, ConfigurableModule
     $f->name = 'uikit';
     $f->label = 'Download UIkit';
     $f->collapsed = Inputfield::collapsedYes;
-    $f->notes = "WARNING: This will wipe the folder /site/templates/uikit and then download the selected uikit version into that folder!";
+    $f->notes = "Will be downloaded to " . $this->wire->config->urls->site . "templates/"; //JAG
+    //$f->notes = "Will be downloaded to /site/templates/";
     foreach ($this->getUikitVersions() as $k => $v) $f->addOption($k);
     $fs->add($f);
 
@@ -3551,8 +3555,9 @@ class RockFrontend extends WireData implements Module, ConfigurableModule
     $f->label = 'CDN-Downloader';
     $f->collapsed = Inputfield::collapsedYes;
     $f->description = 'Loading assets via CDN might be illegal in your country due to GDPR regulations!';
-    $f->notes = 'Files will be downloaded to /site/templates/assets/
+    $f->notes = 'Files will be downloaded to ' . $this->wire->config->urls->site . 'templates/assets/
         Need more presets? Let me know in the forum!';
+    //$f->notes = 'Files will be downloaded to /site/templates/assets/
     $f->value = "
         Presets:
         <ul class='presets'>
@@ -3929,7 +3934,8 @@ class RockFrontend extends WireData implements Module, ConfigurableModule
 
   private function showFontFileSize(): string
   {
-    $out = "Filesize of all .woff2 files in /site/templates/webfonts: {size}";
+    $out = "Filesize of all .woff2 files in " . $this->wire->config->urls->site . "templates/webfonts: {size}"; //JAG
+    //$out = "Filesize of all .woff2 files in /site/templates/webfonts: {size}";
     $size = 0;
     foreach (glob($this->wire->config->paths->templates . "webfonts/*.woff2") as $file) {
       $size += filesize($file);

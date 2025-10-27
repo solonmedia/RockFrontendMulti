@@ -13,7 +13,7 @@ namespace ProcessWire;
 // this is to prevent issues when anything uses $files->render() before the
 // page render is triggered (for example using setPageNameReplacements in
 // Site::migrate())
-$templateFile = $this->wire('page')->template->filename;
+$templateFile = ($this->wire('page')) ? $this->wire('page')->template->filename : null;
 if ($templateFile !== $rockfrontend->autoPrependFile) return;
 
 // If page is not set or not a page we exit early.
