@@ -19,6 +19,7 @@ class LiveReload extends Wire
   public function __construct()
   {
     $config = $this->wire->config->livereload;
+	$site_root = $this->wire->config->urls->site;
     if (is_bool($config)) $config = (int)$config; // convert true/false to int
     if (is_int($config)) $config = ['interval' => $config]; // set interval
     if (is_float($config)) $config = ['interval' => $config]; // set interval
@@ -40,23 +41,22 @@ class LiveReload extends Wire
         '.*/\.github',
         '.*/\.vscode',
 
-        '.*/site/assets/backups',
-        '.*/site/assets/cache',
-        '.*/site/assets/files',
-        '.*/site/assets/logs',
-        '.*/site/assets/sessions',
-        '.*/site/assets/ProCache-*',
-        '.*/site/assets/pwpc',
-        '.*/site/assets/RockFrontend/.*.css',
-        '.*/site/assets/RockPdfDumps/*',
-        '.*/site/assets/RockPdf/*',
+        '.*/' . $site_root . 'assets/backups',
+        '.*/' . $site_root . 'assets/cache',
+        '.*/' . $site_root . 'assets/files',
+        '.*/' . $site_root . 'assets/logs',
+        '.*/' . $site_root . 'assets/sessions',
+        '.*/' . $site_root . 'assets/ProCache-*',
+        '.*/' . $site_root . 'assets/pwpc',
+        '.*/' . $site_root . 'assets/RockFrontend/.*.css',
+        '.*/' . $site_root . 'assets/RockPdfDumps/*',
+        '.*/' . $site_root . 'assets/RockPdf/*',
+        '.*/site-base/modules/TracyDebugger/tracy-.*',
+        '.*/site-base/modules/RockBlocks/blocks/.*.css',
 
-        '.*/site/modules/TracyDebugger/tracy-.*',
-        '.*/site/modules/RockBlocks/blocks/.*.css',
-
-        '.*/site/templates/bundle/*',
-        '.*/site/templates/uikit',
-        '.*/site/templates/uikit-*',
+        '.*/' . $site_root . 'templates/bundle/*',
+        '.*/' . $site_root . 'templates/uikit',
+        '.*/' . $site_root . 'templates/uikit-*',
       ],
       // user defined exclude regexes
       'exclude' => [],

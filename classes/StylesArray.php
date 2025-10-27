@@ -40,22 +40,32 @@ class StylesArray extends AssetsArray
   {
     if ($this->wire->page->template == 'admin') return $this;
 
+	$sitePath = $this->wire->config->urls->site; //JAG
+
     // add all style files in the following folders
-    $this->addAll('/site/templates/layouts');
-    $this->addAll('/site/templates/styles');
+    /** $this->addAll('/site/templates/layouts');
     $this->addAll('/site/templates/less');
-    $this->addAll('/site/templates/scss');
     $this->addAll('/site/templates/sections');
-    $this->addAll('/site/templates/partials');
+    $this->addAll('/site/templates/partials');**/
+	
+    // add all style files in the following folders
+    $this->addAll($sitePath.'templates/layouts');
+    $this->addAll($sitePath.'templates/styles');
+    $this->addAll($sitePath.'templates/less');
+    $this->addAll($sitePath.'templates/scss');
+    $this->addAll($sitePath.'templates/sections');
+    $this->addAll($sitePath.'templates/partials');
 
     // load less files from rockblocks
     $rpb = $this->wire->modules->get("RockPageBuilder");
     if ($rpb && $rpb->useRockBlocks) {
-      $this->addAll('/site/modules/RockPageBuilder/blocks');
+      $this->addAll('/site-base/modules/RockPageBuilder/blocks');
     }
 
     // add the webfonts.css file if it exists
-    $file = $this->rockfrontend()->getFile('/site/templates/webfonts/webfonts.css');
+    // $file = $this->rockfrontend()->getFile('/site/templates/webfonts/webfonts.css');
+    $file = $this->rockfrontend()->getFile($sitePath.'templates/webfonts/webfonts.css'); //JAG
+
     if (is_file($file)) $this->add($file);
 
     return $this;
@@ -359,7 +369,8 @@ class StylesArray extends AssetsArray
     $opt->setArray([
       'debug' => $this->wire->config->debug,
       'indent' => '  ',
-      'cssDir' => $this->cssDir ?: "/site/templates/bundle/",
+//    'cssDir' => $this->cssDir ?: "/site/templates/bundle/",
+      'cssDir' => $this->cssDir ?: $this->wire->config->urls->site."templates/bundle/",
       'cssName' => $this->name,
       'sourcemaps' => $this->wire->config->debug,
 
@@ -416,5 +427,11 @@ class StylesArray extends AssetsArray
     $vars[$key] = $value;
     $this->vars = $vars;
     return $this;
+  }
+
+  public function getVars() //JAG added
+  {
+    $vars = $this->vars;
+    return $vars;
   }
 }
