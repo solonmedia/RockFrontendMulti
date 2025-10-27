@@ -34,7 +34,7 @@
         ">" +
         "<img src='" +
         RockFrontend.rootUrl +
-        "site/modules/RockFrontend/icons/" +
+        "site-base/modules/RockFrontendMulti/icons/" +
         icon.icon +
         ".svg' " +
         ">" +
@@ -59,7 +59,7 @@
     return (
       "<img src='" +
       RockFrontend.rootUrl +
-      "site/modules/RockFrontend/icons/" +
+      "site-base/modules/RockFrontendMulti/icons/" +
       name +
       ".svg'>"
     );
@@ -131,7 +131,7 @@
       " data-autoclose='' data-reload=''>" +
       "<img src='" +
       RockFrontend.rootUrl +
-      "site/modules/RockFrontend/icons/plus.svg'>" +
+      "site-base/modules/RockFrontendMulti/icons/plus.svg'>" +
       "</a>" +
       "</div>"
     );
